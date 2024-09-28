@@ -1,44 +1,47 @@
 package org.example.servlet;
 
-import org.example.dao.PersonDAO;
+import org.example.repository.impl.PersonDaoImpl;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/person")
 public class PersonServlet extends HttpServlet {
 
-    private PersonDAO personDAO;
+    private final PersonServiceImpl userService = new PersonServiceImpl(new PersonDaoImpl(DatabaseConfig.getDataSource()));
+    private final Gson gson = new Gson();
 
     @Override
-    public void init() throws ServletException {
-        personDAO = new PersonDAO();
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<PersonDTO> persons = userService.getAllUsers();
+        resp.setContentType("application/json");
+        resp.getWriter().write(gson.toJson(users));
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String surname = request.getParameter("surname");
-
-        Person person = new Person();
-        person.setName(name);
-        person.setSurname(surname);
-
-        personDAO.save(person);
-
-        response.sendRedirect("success.jsp");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PersonDTO personDTO = gson.fromJson(req.getReader(), PersonDTO.class);
+        userService.addUser(PersonDTO);
+        resp.setStatus(HttpServletResponse.SC_CREATED);
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Long id = Long.valueOf(request.getParameter("id"));
-        Person person = personDAO.findById(id);
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PersonDTO personDTO = gson.fromJson(req.getReader(), PersonDTO.class);
+        userService.updateUser(PersonDTO);
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
 
-        request.setAttribute("person", person);
-        request.getRequestDispatcher("/personDetails.jsp").forward(request, response);
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        userService.deleteUser(id);
+        resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
 }

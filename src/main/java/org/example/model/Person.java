@@ -3,17 +3,22 @@ package org.example.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Person {
-    private Long id;
+    private UUID id;
     private String name;
     private String surname;
 
     // Связь ManyToMany (с классом Order)
     private List<Order> orders = new ArrayList<>();
 
+    public Person() {
 
-    public Long getId() {
+    }
+
+
+    public UUID getId() {
         return id;
     }
 
@@ -36,8 +41,19 @@ public class Person {
         return orders;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-    public Person(Long id, String name, String surname) {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Person(UUID id, String name, String surname) {
         this.surname = surname;
         this.name = name;
         this.id = id;
