@@ -1,7 +1,7 @@
 package org.example.repository.impl;
 import com.zaxxer.hikari.HikariDataSource;
 import org.example.model.Person;
-import org.example.repository.PersonDao;
+import org.example.repository.PersonDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class PersonDaoImpl implements PersonDao {
+public class PersonDaoImpl implements PersonDAO {
 
     private final HikariDataSource dataSource;
 

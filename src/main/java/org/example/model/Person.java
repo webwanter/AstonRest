@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Person {
-    private UUID id;
+    private UUID uuid;
     private String name;
     private String surname;
 
@@ -19,7 +19,7 @@ public class Person {
 
 
     public UUID getId() {
-        return id;
+        return uuid;
     }
 
 
@@ -42,7 +42,7 @@ public class Person {
     }
 
     public void setId(UUID id) {
-        this.id = id;
+        this.uuid = uuid;
     }
 
     public void setName(String name) {
@@ -56,7 +56,7 @@ public class Person {
     public Person(UUID id, String name, String surname) {
         this.surname = surname;
         this.name = name;
-        this.id = id;
+        this.uuid = id;
     }
 
     @Override
@@ -64,11 +64,11 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(id, person.id) && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(orders, person.orders);
+        return Objects.equals(uuid, person.uuid) && Objects.equals(name, person.name) && Objects.equals(surname, person.surname) && Objects.equals(orders, person.orders);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, orders);
+        return Objects.hash(uuid, name, surname, orders);
     }
 }
