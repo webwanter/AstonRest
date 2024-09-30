@@ -11,5 +11,5 @@ public interface PersonService {
     void save(PersonDTO personDTO);
     PersonDTO findById(UUID uuid);
     List<PersonDTO> findAll();
-    PersonService deleteById(UUID uuid);
+    boolean deleteById(UUID uuid);
 }

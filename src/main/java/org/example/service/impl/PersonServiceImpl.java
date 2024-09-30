@@ -38,7 +38,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<PersonDTO> findAll() {
-        List<Person> persons = personDAO.findAll();
+        List<Person> persons = (List<Person>) personDAO.findAll();
         List<PersonDTO> personDTOs = new ArrayList<>();
         for (Person person : persons) {
             PersonDTO personDTO = new PersonDTO();
@@ -50,7 +50,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonService deleteById(UUID uuid) {
-        personDAO.deletePerson(id);
+    public boolean deleteById(UUID uuid) {
+        try {
+            personDAO.deleteById(uuid);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 }
